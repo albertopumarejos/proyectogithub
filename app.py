@@ -9,15 +9,10 @@ import seaborn as sns
 # Configuración desde archivo local
 from config import INFLUX_URL, INFLUX_TOKEN, ORG, BUCKET
 
-# --- Cargar datos desde InfluxDB ---
-def get_temperature_data():
-     query = '''
-     from(bucket: "homeiot")
-       |> range(start: -24h)
-       |> filter(fn: (r) => r._measurement == "airSensor")
-       |> filter(fn: (r) => r._field == "temperature")
 
 def get_humidity_data():
+def get_temperature_data():
+     
     query = '''
     from(bucket: "homeiot")
       |> range(start: -24h)
@@ -27,6 +22,7 @@ def get_humidity_data():
     client = InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=ORG)
     df = client.query_api().query_data_frame(org=ORG, query=query)
     df = df[["_time", "_value"]].rename(columns={"_time": "timestamp", "_value": "humidity"})
+    df = df[["_time", "_value"]].rename(columns={"_time": "timestamp", "_value": "temperature"})
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     return df
 
