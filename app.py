@@ -33,7 +33,7 @@ def detectar_anomalias(df):
 st.title("Análisis de Temperatura con IA local")
 
 if st.button("Cargar y analizar datos"):
-    df = get_humidity_data()
+    df = get_temperature_data()
     st.subheader("Datos crudos:")
     st.dataframe(df)
 
@@ -45,7 +45,7 @@ if st.button("Cargar y analizar datos"):
 
     st.subheader("Visualización con anomalías:")
     fig, ax = plt.subplots()
-    sns.lineplot(x="timestamp", y="temperatura", data=df, label="Temperatura", ax=ax)
+    sns.lineplot(x="timestamp", y="humedad", data=df, label="humedad", ax=ax)
     ax.scatter(outliers["timestamp"], outliers["humidity"], color="red", label="Anomalía", zorder=5)
     ax.legend()
     st.pyplot(fig)
