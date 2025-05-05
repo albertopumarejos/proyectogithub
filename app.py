@@ -10,6 +10,7 @@ import seaborn as sns
 from config import INFLUX_URL, INFLUX_TOKEN, ORG, BUCKET
 
 # --- Cargar datos desde InfluxDB ---
+
 def get_humidity_data():
     query = '''
     from(bucket: "homeiot")
@@ -31,6 +32,13 @@ def detectar_anomalias(df):
 
 # --- Streamlit UI ---
 st.title("Análisis de humedad con IA local")
+st.title("Análísis de temperatura con IA local")
+
+if st.button("carar y analizar datos de temperatura")
+     df= get_temperature_data()
+     st.subheader("Datos crudos:")
+     st.dataframe(df)
+    
 
 if st.button("Cargar y analizar datos"):
     df = get_humidity_data()
