@@ -28,16 +28,18 @@ def detectar_anomalias(df, variable):
     return df
 
 # --- Streamlit UI ---
-st.title("Análisis de temperatura y humedad con IA local")
+st.title("Análisis de Temperatura y Humedad con IA Local")
 
-opcion = st.radio("Seleccione el tipo de datos a analizar:", ("Temperatura", "Humedad"))
+# Botón para temperatura
+if st.button("Cargar y analizar datos de TEMPERATURA"):
+    variable = "temperature"
+    df = get_data(variable)
 
-if st.button("cargar y analizar datos de temperatura"):
-    df = get_temperature_data()
-     st.subheader("Datos crudos:")
-     st.dataframe(df)
-     st.subheader("Estadísticas descriptivas:")
-     st.write(df[variable].describe())
+    st.subheader("Datos crudos:")
+    st.dataframe(df)
+
+    st.subheader("Estadísticas descriptivas:")
+    st.write(df[variable].describe())
 
     df = detectar_anomalias(df, variable)
     outliers = df[df["anomaly"] == -1]
@@ -52,10 +54,13 @@ if st.button("cargar y analizar datos de temperatura"):
     st.subheader("Anomalías detectadas:")
     st.dataframe(outliers)
 
-if st.button("Cargar y analizar datos"):
-     df = get_humidity_data()
-     st.subheader("Datos crudos:")
-     st.dataframe(df)
+# Botón para humedad
+if st.button("Cargar y analizar datos de HUMEDAD"):
+    variable = "humidity"
+    df = get_data(variable)
+
+    st.subheader("Datos crudos:")
+    st.dataframe(df)
 
     st.subheader("Estadísticas descriptivas:")
     st.write(df[variable].describe())
