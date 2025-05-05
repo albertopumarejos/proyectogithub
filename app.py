@@ -30,7 +30,7 @@ def detectar_anomalias(df):
     return df
 
 # --- Streamlit UI ---
-st.title("Análisis de Temperatura con IA local")
+st.title("Análisis de humedad con IA local")
 
 if st.button("Cargar y analizar datos"):
     df = get_hunmidity_data()
@@ -45,7 +45,7 @@ if st.button("Cargar y analizar datos"):
 
     st.subheader("Visualización con anomalías:")
     fig, ax = plt.subplots()
-    sns.lineplot(x="timestamp", y="temperatura", data=df, label="temperatura", ax=ax)
+    sns.lineplot(x="timestamp", y="humedad", data=df, label="humedad", ax=ax)
     ax.scatter(outliers["timestamp"], outliers["humidity"], color="red", label="Anomalía", zorder=5)
     ax.legend()
     st.pyplot(fig)
