@@ -36,8 +36,8 @@ if st.button("cargar y analizar datos de temperatura"):
     df = get_temperature_data()
      st.subheader("Datos crudos:")
      st.dataframe(df)
-      st.subheader("Estadísticas descriptivas:")
-    st.write(df[variable].describe())
+     st.subheader("Estadísticas descriptivas:")
+     st.write(df[variable].describe())
 
     df = detectar_anomalias(df, variable)
     outliers = df[df["anomaly"] == -1]
