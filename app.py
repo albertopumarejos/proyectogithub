@@ -10,6 +10,12 @@ import seaborn as sns
 from config import INFLUX_URL, INFLUX_TOKEN, ORG, BUCKET
 
 # --- Cargar datos desde InfluxDB ---
+def get_temperature_data():
+     query = '''
+     from(bucket: "homeiot")
+       |> range(start: -24h)
+       |> filter(fn: (r) => r._measurement == "airSensor")
+       |> filter(fn: (r) => r._field == "temperature")
 
 def get_humidity_data():
     query = '''
@@ -28,6 +34,7 @@ def get_humidity_data():
 def detectar_anomalias(df):
     model = IsolationForest(contamination=0.05, random_state=42)
     df["anomaly"] = model.fit_predict(df[["humidity"]])
+    df["anomaly"] = model.fit_predict(df[["temperature"]])
     return df
 
 # --- Streamlit UI ---
@@ -41,9 +48,26 @@ if st.button("cargar y analizar datos de temperatura"):
     st.dataframe(df)
     st.subheader("Estadísticas descriptivas:")
     st.write(df["temperature"].describe())
+
+    
+    st.subheader("Estadísticas descriptivas:")
+    st.write(df["humidity"].describe())
+
+    df = detectar_anomalias(df)
+    outliers = df[df["anomaly"] == -1]
+
+    st.subheader("Visualización con anomalías:")
+    fig, ax = plt.subplots()
+    sns.lineplot(x="timestamp", y="humidity", data=df, label="Humedad", ax=ax)
+    ax.scatter(outliers["timestamp"], outliers["humidity"], color="red", label="Anomalía", zorder=5)
+    ax.legend()
+    st.pyplot(fig)
+
+    st.subheader("Anomalías detectadas:")
+    st.dataframe(outliers)
     
 
-if st.button("Cargar y analizar datos"):
+if st.button("Cargar y analizar datos de humedad"):
     df = get_humidity_data()
     st.subheader("Datos crudos:")
     st.dataframe(df)
