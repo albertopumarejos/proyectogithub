@@ -34,10 +34,12 @@ def detectar_anomalias(df):
 st.title("Análisis de humedad con IA local")
 st.title("Análísis de temperatura con IA local")
 
-if st.button("carar y analizar datos de temperatura")
+if st.button("cargar y analizar datos de temperatura")
      df= get_temperature_data()
      st.subheader("Datos crudos:")
      st.dataframe(df)
+     st.subheader("Estadísticas descriptivas:")
+     st.write(df["temperature"].describe())
     
 
 if st.button("Cargar y analizar datos"):
